@@ -1,0 +1,6 @@
+---
+applications:
+- name: ops-con-proxy
+  memory: 512M
+  buildpack: python_buildpack
+  command: python routes.py
