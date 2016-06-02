@@ -3,3 +3,4 @@ Flask
 requests
 requests_ntlm
 datetime
+boto3

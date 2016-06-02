@@ -20,8 +20,8 @@ def hello_world():
 
 # Start App
 if __name__ == '__main__':
-  scheduler.add_job(methods.refresh_installs, 'interval', seconds=20)
-  scheduler.add_job(methods.refresh_srs, 'interval', seconds=20)
+  scheduler.add_job(methods.refresh_installs, 'interval', hours=24)
+  scheduler.add_job(methods.refresh_srs, 'interval', minutes=15)
   scheduler.add_listener(methods.error_listener, events.EVENT_JOB_EXECUTED | events.EVENT_JOB_ERROR)
   scheduler.start()
 
