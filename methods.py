@@ -48,8 +48,7 @@ def refresh_srs():
     r = requests.get(url,auth=HttpNtlmAuth('{0}\\{1}'.format(domain,username),password))
     if r.status_code == 200:
       sr_data = r.json()
-      s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,
-                          aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
+      s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
       s3.Object(ess_srs_bucket,'{0}.json'.format(gdun)).put(Body=json.dumps(sr_data))
 
 
@@ -65,6 +64,5 @@ def refresh_installs():
     r = requests.get(url,auth=HttpNtlmAuth('{0}\\{1}'.format(domain,username),password))
     if r.status_code == 200:
       array_data = r.json()
-      s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,
-                          aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
+      s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
       s3.Object(ecs_installs_bucket,'{0}.json'.format(gdun)).put(Body=json.dumps(array_data))
