@@ -24,7 +24,9 @@ if __name__ == '__main__':
   scheduler.add_job(methods.refresh_srs, 'interval', minutes=15)
   scheduler.add_listener(methods.error_listener, events.EVENT_JOB_EXECUTED | events.EVENT_JOB_ERROR)
   scheduler.start()
-
+  methods.refresh_installs()
+  methods.refresh_srs()
+  
   try:
     app.run(host='0.0.0.0', port=port)
 
