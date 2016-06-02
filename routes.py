@@ -26,7 +26,7 @@ def update_installs():
 @app.route('/update/srs/', methods=['PUT'])
 def update_srs():
   methods.refresh_srs()
-  return 'OK
+  return 'OK'
 
 
 # Start App
