@@ -49,7 +49,8 @@ def refresh_srs():
     if r.status_code == 200:
       sr_data = r.json()
       s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
-      s3.Object(ess_srs_bucket,'{0}.json'.format(gdun)).put(Body=json.dumps(sr_data))
+      response = s3.Object(ess_srs_bucket,'{0}.json'.format(gdun)).put(Body=json.dumps(sr_data))
+      print(respone)
 
 
 # Primary job function
@@ -65,4 +66,5 @@ def refresh_installs():
     if r.status_code == 200:
       array_data = r.json()
       s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
-      s3.Object(ecs_installs_bucket,'{0}.json'.format(gdun)).put(Body=json.dumps(array_data))
+      response = s3.Object(ecs_installs_bucket,'{0}.json'.format(gdun)).put(Body=json.dumps(array_data))
+      print(respone)
