@@ -44,13 +44,14 @@ def refresh_srs():
   gduns = config['gduns']
 
   for gdun in gduns:
-    url = srurl + str(gdun) + srurl2
+    url = srurl + str(gdun['num']) + srurl2
     r = requests.get(url,auth=HttpNtlmAuth('{0}\\{1}'.format(domain,username),password))
     if r.status_code == 200:
       sr_data = r.json()
       s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
-      response = s3.Object(ess_srs_bucket,'{0}.json'.format(gdun)).put(Body=json.dumps(sr_data))
-      print(respone)
+      response = s3.Object(ess_srs_bucket,'{0}.json'.format(gdun['num'])).put(Body=json.dumps(sr_data))
+      print(response)
+      return json.dumps(response)
 
 
 # Primary job function
@@ -61,10 +62,11 @@ def refresh_installs():
   gduns = config['gduns']
 
   for gdun in gduns:
-    url = iburl1+str(gdun)+iburl2
+    url = iburl1+str(gdun['num'])+iburl2
     r = requests.get(url,auth=HttpNtlmAuth('{0}\\{1}'.format(domain,username),password))
     if r.status_code == 200:
       array_data = r.json()
       s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
-      response = s3.Object(ecs_installs_bucket,'{0}.json'.format(gdun)).put(Body=json.dumps(array_data))
-      print(respone)
+      response = s3.Object(ecs_installs_bucket,'{0}.json'.format(gdun['num'])).put(Body=json.dumps(array_data))
+      print(response)
+      return json.dumps(response)
