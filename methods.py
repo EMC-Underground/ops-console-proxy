@@ -51,8 +51,6 @@ def refresh_srs():
       s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
       response = s3.Object(ess_srs_bucket,'{0}.json'.format(gdun['num'])).put(Body=json.dumps(sr_data))
       print(response)
-      return json.dumps(response)
-
 
 # Primary job function
 def refresh_installs():
@@ -69,4 +67,3 @@ def refresh_installs():
       s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
       response = s3.Object(ecs_installs_bucket,'{0}.json'.format(gdun['num'])).put(Body=json.dumps(array_data))
       print(response)
-      return json.dumps(response)

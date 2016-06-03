@@ -20,11 +20,13 @@ def hello_world():
 
 @app.route('/update/installs/', methods=['PUT'])
 def update_installs():
-  return methods.refresh_installs()
+  methods.refresh_installs()
+  return 'OK'
 
 @app.route('/update/srs/', methods=['PUT'])
 def update_srs():
-  return methods.refresh_srs()
+  methods.refresh_srs()
+  return 'OK'
 
 
 # Start App
