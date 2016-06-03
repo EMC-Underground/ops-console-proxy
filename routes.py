@@ -11,7 +11,7 @@ scheduler = BackgroundScheduler()
 port = int(os.getenv('VCAP_APP_PORT', 8080))
 
 # Uncomment if you need to debug the site
-app.debug = True
+# app.debug = True
 
 # Routes
 @app.route('/')
