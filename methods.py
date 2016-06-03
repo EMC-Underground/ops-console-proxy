@@ -20,12 +20,12 @@ iburl1 = config['iburl']
 iburl2 = config['iburl2']
 srurl = config['srurl']
 srurl2 = config['srurl2']
-auth_token = config['auth_token']
 ecs_url = config['ecs_url']
 ecs_user_id = config['ecs_user_id']
 ecs_user_access_key = config['ecs_user_access_key']
 ecs_installs_bucket = config['ecs_installs_bucket']
 ess_srs_bucket = config['ess_srs_bucket']
+hubot_url = config['hubot_url']
 
 ### Methods ###
 
@@ -52,6 +52,8 @@ def refresh_srs():
       sr_data = r.json()
       response = s3.Object(ess_srs_bucket,'{0}.json'.format(gdun['num'])).put(Body=json.dumps(sr_data))
       print(response)
+    else:
+      hubot_request = requests.post(hubot_url,data={'message':'Failed to update SRs for {0}'.format(gdun['name'])})
 
 # Primary job function
 def refresh_installs():
@@ -69,3 +71,5 @@ def refresh_installs():
       array_data = r.json()
       response = s3.Object(ecs_installs_bucket,'{0}.json'.format(gdun['num'])).put(Body=json.dumps(array_data))
       print(response)
+    else:
+      hubot_request = requests.post(hubot_url,data={'message':'Failed to update installs for {0}'.format(gdun['name'])})
