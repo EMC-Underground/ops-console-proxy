@@ -18,16 +18,31 @@ port = int(os.getenv('VCAP_APP_PORT', 8080))
 def hello_world():
   return 'Hello World!'
 
-@app.route('/update/installs/', methods=['PUT'])
+@app.route('/installs/update/', methods=['PUT'])
 def update_installs():
   methods.refresh_installs()
   return 'OK'
 
-@app.route('/update/srs/', methods=['PUT'])
+@app.route('/installs/<gdun>/', methods=['GET'])
+def get_install_base(gdun):
+  response = methods.get_installs(gdun)
+  if response is None:
+    abort(500)
+  else:
+    return response
+
+@app.route('/srs/update/', methods=['PUT'])
 def update_srs():
   methods.refresh_srs()
   return 'OK'
 
+@app.route('/srs/<gdun>/', methods=['GET'])
+def get_install_base(gdun):
+  response = methods.get_srs(gdun)
+  if response is None:
+    abort(500)
+  else:
+    return response
 
 # Start App
 if __name__ == '__main__':
