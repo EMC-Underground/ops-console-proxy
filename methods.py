@@ -86,8 +86,8 @@ def load_gduns():
                       aws_access_key_id=ecs_user_id,
                       aws_secret_access_key=ecs_user_access_key,
                       config=Config(s3={'addressing_style':'path'}))
-  config_bucket = s3.Bucket('app-config-files')
-  config_object = config_bucket.Object("pacnwgduns.json").get()
+  config_bucket = s3.Bucket('pacnwinstalls')
+  config_object = config_bucket.Object("PNWandNCAcustomers.json").get()
   return json.loads(config_object['Body'].read())
 
 def get_installs(gdun):
@@ -96,8 +96,8 @@ def get_installs(gdun):
   if payload is None:
     gdunSpecs = load_gduns()
     for gdunSpec in gdunSpecs:
-      if gdunSpec['num'] = gdun:
-        url = iburl1+str(gdunSpec['num'])+iburl2
+      if gdunSpec['gduns'] = gdun:
+        url = iburl1+str(gdunSpec['gduns'])+iburl2
         r = requests.get(url,auth=HttpNtlmAuth('{0}\\{1}'.format(domain,username),password))
         if r.status_code == 200:
           payload = json.dumps(r.json())
@@ -108,10 +108,10 @@ def get_installs(gdun):
                               aws_access_key_id=ecs_user_id,
                               aws_secret_access_key=ecs_user_access_key,
                               config=Config(s3={'addressing_style':'path'}))
-          s3.Object(ecs_installs_bucket,'{0}.json'.format(gdunSpec['num'])).put(Body=payload)
+          s3.Object(ecs_installs_bucket,'{0}.json'.format(gdunSpec['gduns'])).put(Body=payload)
           return payload
         else:
-          hubot_request = requests.post(hubot_url,data={'message':'Failed to update installs for {0}'.format(gdunSpec['name'])})
+          hubot_request = requests.post(hubot_url,data={'message':'Failed to update installs for {0}'.format(gdunSpec['customer'])})
           return None
   return payload
 
@@ -121,8 +121,8 @@ def get_srs(gdun):
   if payload is None:
     gdunSpecs = load_gduns()
     for gdunSpec in gdunSpecs:
-      if gdunSpec['num'] = gdun:
-        url = srurl+str(gdunSpec['num'])+srurl2
+      if gdunSpec['gduns'] = gdun:
+        url = srurl+str(gdunSpec['gduns'])+srurl2
         r = requests.get(url,auth=HttpNtlmAuth('{0}\\{1}'.format(domain,username),password))
         if r.status_code == 200:
           payload = json.dumps(r.json())
@@ -133,46 +133,46 @@ def get_srs(gdun):
                               aws_access_key_id=ecs_user_id,
                               aws_secret_access_key=ecs_user_access_key,
                               config=Config(s3={'addressing_style':'path'}))
-          s3.Object(ess_srs_bucket,'{0}.json'.format(gdunSpec['num'])).put(Body=payload)
+          s3.Object(ess_srs_bucket,'{0}.json'.format(gdunSpec['gduns'])).put(Body=payload)
           return payload
         else:
-          hubot_request = requests.post(hubot_url,data={'message':'Failed to update SRs for {0}'.format(gdunSpec['name'])})
+          hubot_request = requests.post(hubot_url,data={'message':'Failed to update SRs for {0}'.format(gdunSpec['customer'])})
           return None
   return payload
 
 def refresh_srs():
   # Grab the file
-  with open('config.json') as config_file:
-    config = json.load(config_file)
-  gduns = config['gduns']
+  # with open('config.json') as config_file:
+  #  config = json.load(config_file)
+  gduns = load_gduns()
 
   s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
 
   for gdun in gduns:
-    url = srurl + str(gdun['num']) + srurl2
+    url = srurl + str(gdun['gduns']) + srurl2
     r = requests.get(url,auth=HttpNtlmAuth('{0}\\{1}'.format(domain,username),password))
     if r.status_code == 200:
       sr_data = r.json()
-      response = s3.Object(ess_srs_bucket,'{0}.json'.format(gdun['num'])).put(Body=json.dumps(sr_data))
+      response = s3.Object(ess_srs_bucket,'{0}.json'.format(gdun['gduns'])).put(Body=json.dumps(sr_data))
       print(response)
     else:
-      hubot_request = requests.post(hubot_url,data={'message':'Failed to update SRs for {0}'.format(gdun['name'])})
+      hubot_request = requests.post(hubot_url,data={'message':'Failed to update SRs for {0}'.format(gdun['customer'])})
 
 # Primary job function
 def refresh_installs():
   # Grab the file
-  with open('config.json') as config_file:
-    config = json.load(config_file)
-  gduns = config['gduns']
+  # with open('config.json') as config_file:
+  #   config = json.load(config_file)
+  gduns = load_gduns()
 
   s3 = boto3.resource('s3',use_ssl=False,endpoint_url=ecs_url,aws_access_key_id=ecs_user_id,aws_secret_access_key=ecs_user_access_key,config=Config(s3={'addressing_style':'path'}))
 
   for gdun in gduns:
-    url = iburl1+str(gdun['num'])+iburl2
+    url = iburl1+str(gdun['gduns'])+iburl2
     r = requests.get(url,auth=HttpNtlmAuth('{0}\\{1}'.format(domain,username),password))
     if r.status_code == 200:
       array_data = r.json()
-      response = s3.Object(ecs_installs_bucket,'{0}.json'.format(gdun['num'])).put(Body=json.dumps(array_data))
+      response = s3.Object(ecs_installs_bucket,'{0}.json'.format(gdun['gduns'])).put(Body=json.dumps(array_data))
       print(response)
     else:
-      hubot_request = requests.post(hubot_url,data={'message':'Failed to update installs for {0}'.format(gdun['name'])})
+      hubot_request = requests.post(hubot_url,data={'message':'Failed to update installs for {0}'.format(gdun['customer'])})
