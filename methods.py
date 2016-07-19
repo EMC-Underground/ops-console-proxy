@@ -96,7 +96,7 @@ def get_installs(gdun):
   if payload is None:
     gdunSpecs = load_gduns()
     for gdunSpec in gdunSpecs:
-      if gdunSpec['gduns'] = gdun:
+      if gdunSpec['gduns'] == gdun:
         url = iburl1+str(gdunSpec['gduns'])+iburl2
         r = requests.get(url,auth=HttpNtlmAuth('{0}\\{1}'.format(domain,username),password))
         if r.status_code == 200:
@@ -121,7 +121,7 @@ def get_srs(gdun):
   if payload is None:
     gdunSpecs = load_gduns()
     for gdunSpec in gdunSpecs:
-      if gdunSpec['gduns'] = gdun:
+      if gdunSpec['gduns'] == gdun:
         url = srurl+str(gdunSpec['gduns'])+srurl2
         r = requests.get(url,auth=HttpNtlmAuth('{0}\\{1}'.format(domain,username),password))
         if r.status_code == 200:
