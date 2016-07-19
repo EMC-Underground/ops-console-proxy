@@ -4,3 +4,4 @@ requests
 requests_ntlm
 datetime
 boto3
+memchaced
